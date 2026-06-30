@@ -1,0 +1,39 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bun install)",
+      "Bash(bun install:*)",
+      "Bash(bun run lint:*)",
+      "Bash(bun run lint)",
+      "Bash(bun run format:*)",
+      "Bash(bun run format)",
+      "Bash(bun run typecheck)",
+      "Bash(bun run build)",
+      "Bash(bun test)",
+      "Bash(bun test:*)",
+      "Bash(git status)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)",
+      "Bash(git branch:*)",
+      "Bash(git checkout:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(npm view *)",
+      "Bash(git check-ignore *)",
+      "Bash(bun add *)",
+      "Bash(bun search *)",
+      "Bash(npm search *)",
+      "Bash(npm info *)",
+      "Bash(bun run *)",
+      "Bash(npm show *)",
+      "Bash(git merge *)",
+      "Bash(git stash *)"
+    ],
+    "deny": [
+      "Bash(git push:*)",
+      "Bash(bun run dev)",
+      "Bash(bun run dev:*)",
+      "Bash(bun run start)"
+    ]
+  }
+}

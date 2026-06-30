@@ -1,0 +1,8 @@
+# deps
+node_modules/
+
+# local env — never commit live secrets (.env.example stays tracked)
+.env
+
+# SQLite database files — created automatically on first start
+data/
