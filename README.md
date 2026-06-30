@@ -104,7 +104,7 @@ reclaude/
 ├── _spec/                 # Spec docs (one per change) + template
 ├── CLAUDE.md              # Project context for Claude Code
 ├── .claude/
-│   ├── commands/          # /change, /improve, /verify-ui, /ui-copy
+│   ├── commands/          # /change, /improve
 │   ├── agents/            # Subagent definitions
 │   ├── steering/          # Architecture & convention docs
 │   └── settings.json      # Pre-approved permissions for the pipeline
