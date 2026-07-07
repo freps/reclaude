@@ -13,22 +13,24 @@
 
 ## Folder Structure
 
+Top-Level (von Hand gepflegt): `migrations/` (Plain-SQL-Migrationen, außerhalb `src/`),
+`data/` (SQLite `app.db` + `auth.db`, gitignored, auto-erzeugt), `.env` / `.env.example`,
+`package.json`, `tsconfig.json`. Entry-File in `src/`: `index.ts` (erzeugt die Hono-Instanz,
+mountet Routen, exportiert den Server).
+
+Der `src/`-Baum wird automatisch gepflegt (Hook-Script `steering-tree.ts`) — der Bereich
+zwischen den Markern wird bei Backend-Änderungen neu generiert.
+
+<!-- BEGIN: folder-structure (auto-generiert – nicht von Hand editieren) -->
+
 ```
-backend/
-├── migrations/           # Plain-SQL migrations (001_initial_schema.sql, etc.) — outside src/
-├── data/                 # SQLite files (gitignored, created automatically on first start)
-│   ├── app.db            # App data (todos, … — your own tables)
-│   └── auth.db           # better-auth (users, sessions, accounts)
-├── src/
-│   ├── index.ts          # App entry point — creates Hono instance, mounts routes, exports server
-│   ├── lib/              # Shared configuration and utilities (auth.ts, db.ts, bun-sqlite-dialect.ts, …)
-│   ├── routes/           # Route modules (each exports a Hono instance)
-│   └── middleware/       # Custom middleware
-├── .env                  # Local environment (copy from .env.example)
-├── .env.example          # Example environment file
-├── package.json
-└── tsconfig.json
+backend/src/  (2 Dateien)
+├── lib/  (4 Dateien)  — Shared Config & Utilities
+├── middleware/  (1 Datei)  — Custom Middleware
+└── routes/  (5 Dateien)  — Route-Module (je eine Hono-Instanz)
 ```
+
+<!-- END: folder-structure (auto-generiert – nicht von Hand editieren) -->
 
 ## Code Style
 
@@ -123,6 +125,27 @@ No `DATABASE_URL` required — SQLite files are created automatically in `backen
 - Route files: kebab-case (`user-profiles.ts`).
 - Middleware files: kebab-case (`auth-guard.ts`).
 - Types: PascalCase, co-located or in a `types/` directory when shared.
+
+## Wiederverwendbare Bausteine
+
+Dieses Kapitel wird automatisch gepflegt (Stop-Hook `update-steering.sh`).
+Es listet die wiederverwendbaren Helfer aus `backend/src/lib/` und die Middleware
+aus `backend/src/middleware/` mit je einem Satz, damit sie bei neuen Routen/Features
+bevorzugt wiederverwendet statt neu gebaut werden. Der Bereich zwischen den Markern
+wird bei Backend-Änderungen neu generiert — außerhalb der Marker von Hand
+geschriebene Inhalte bleiben unangetastet.
+
+<!-- BEGIN: reusable-backend (auto-generiert – nicht von Hand editieren) -->
+
+| Baustein | Zweck (1 Satz) | Wiederverwenden für |
+|----------|-------|---|
+| **lib/auth.ts** | better-auth-Server-Instanz (Sessions, User, Accounts) auf `auth.db`. | Auth-Zugriff in Middleware und Routen. |
+| **lib/db.ts** | Kysely-Datenbankverbindung zu `app.db` (Bun-SQLite). | Jeder DB-Zugriff auf App-Daten. |
+| **lib/bun-sqlite-dialect.ts** | Kysely-Dialekt für Bun's eingebautes SQLite. | Interne DB-Anbindung (nicht direkt in Routen nötig). |
+| **lib/migrate.ts** | Führt die Plain-SQL-Migrationen aus `migrations/` beim Start aus. | Schema-Migrationen (läuft automatisch, nicht neu bauen). |
+| **middleware/auth.ts** | Hono-Middleware, die die Session prüft und `user` in den Context legt. | Schutz authentifizierter Routen. |
+
+<!-- END: reusable-backend (auto-generiert – nicht von Hand editieren) -->
 
 ## Server Configuration
 

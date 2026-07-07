@@ -42,10 +42,18 @@ Agents communicate through a spec doc in `_spec/` (copied from `_spec/_template.
 
 ## Conventions
 
-Authoritative steering docs — read the relevant one before writing code:
+Authoritative steering docs. Open the relevant one **before you grep** whenever a task touches
+that layer — including quick "where does X live?" questions, not just when writing code. These are
+not just style rules: each doc carries an auto-generated **file→purpose map** (the "Wiederverwendbare
+Components/Bausteine" table + folder-structure tree) that names the exact file and helper for every
+reusable building block. Reading it is the fast path — it usually replaces a code search outright and
+stops you from re-implementing a helper that already exists. These auto-generated sections are
+maintained by hooks (see Hard Rules); never hand-edit inside their markers.
 
-- `.claude/steering/frontend.md` — React/TS conventions, folder structure, styling rules
-- `.claude/steering/backend.md` — Hono patterns (inline handlers, no controllers), SQLite/better-auth, routing, error handling
+- `.claude/steering/frontend.md` — React/TS conventions, folder structure, styling rules, and the
+  map of reusable components/hooks/utilities in `frontend/src/`.
+- `.claude/steering/backend.md` — Hono patterns (inline handlers, no controllers), SQLite/better-auth,
+  routing, error handling, and the map of reusable libs in `backend/src/lib/` + middleware.
 
 ## Hard Rules
 
@@ -53,3 +61,10 @@ Authoritative steering docs — read the relevant one before writing code:
 - Never push to remote — committing is fine within the workflows, pushing is the user's call.
 - Work on `feat/*` or `fix/*` branches, never directly on `main`, when using the workflows.
 - When introducing a new dependency / module, make a proposal to the user first. Always check for latest versions and compatibility.
+- The steering docs contain auto-generated sections wrapped in `<!-- BEGIN: … -->` / `<!-- END: … -->` markers (folder-structure tree + reusable-components/backend catalogs). They are maintained by the hooks in `.claude/hooks/` — never edit inside those marker regions by hand.
+
+## Preferences
+- Use built-in tools (Read, Write, Glob, Grep, LS) instead of shell commands wherever possible
+- Avoid `find`, `xargs`, `ls` via Bash — use native file tools instead if possible
+- Use Bash only when truly necessary (e.g. npm, git, test runners)
+- Avoid commands with absolute paths, because those require confirmation. Instead, split it in multiple commands. Navigate to the right folder and then run the command.

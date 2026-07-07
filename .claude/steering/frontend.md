@@ -14,56 +14,35 @@
 
 ## Folder Structure
 
+Top-Level (von Hand gepflegt): `public/` (Static Assets), `eslint.config.mjs`,
+`vite.config.ts`, `tsconfig.json` / `tsconfig.app.json`, `components.json`
+(shadcn/ui-Config), `.prettierrc`. Entry-Files in `src/`: `main.tsx` (ReactDOM),
+`App.tsx` (ToastProvider > RouterProvider), `router.tsx` (React Router v7), `style.css`
+(Tailwind + dark-first Tokens), `vite-env.d.ts` (Vite-Env-Typen).
+
+Der `src/`-Baum wird automatisch gepflegt (Hook-Script `steering-tree.ts`) — der Bereich
+zwischen den Markern wird bei Frontend-Änderungen neu generiert.
+
+<!-- BEGIN: folder-structure (auto-generiert – nicht von Hand editieren) -->
+
 ```
-frontend/
-├── src/
-│   ├── components/       # Shared components
-│   │   ├── AppBreadcrumb.tsx    # Breadcrumb navigation
-│   │   ├── AppLogo.tsx          # Logo component
-│   │   ├── AppToast.tsx         # Global toast notifications
-│   │   ├── CreateButton.tsx     # Generic „+" button (CRUD-UI pattern)
-│   │   ├── DList.tsx            # Card-based table container
-│   │   ├── DListRow.tsx         # Table row component (with Link support)
-│   │   ├── Navbar.tsx           # Top navigation bar
-│   │   ├── PageHeader.tsx       # Title / subtitle / leading icon / actions
-│   │   └── ui/                  # shadcn/ui primitives (CLI-generated, do not edit manually)
-│   ├── context/          # React Context providers
-│   │   └── ToastContext.tsx     # Toast context provider
-│   ├── hooks/            # React Hooks (useX pattern)
-│   │   ├── useAuth.ts           # Authentication hook (wraps better-auth/react)
-│   │   ├── useToast.ts          # Toast hook (re-export from ToastContext)
-│   │   ├── useMediaQuery.ts     # Media query hook (matchMedia API)
-│   │   └── useWindowScroll.ts   # Window scroll hook (scroll listener)
-│   ├── lib/              # Utility functions and helpers
-│   │   ├── auth-client.ts       # better-auth client (better-auth/react)
-│   │   ├── utils.ts             # General utilities (cn, clsx + tailwind-merge)
-│   │   ├── users.ts             # User-CRUD API helpers (listUsers, createUser, …)
-│   │   └── todos.ts             # Todo-CRUD API helpers (listTodos, createTodo, …)
-│   ├── pages/            # Page components (React Router)
-│   │   ├── index.tsx            # Landing page
-│   │   ├── login.tsx
-│   │   ├── profil.tsx
-│   │   ├── impressum.tsx
-│   │   ├── theme-preview.tsx    # Authoritative visual reference for the design system
-│   │   ├── todos/              # Todo example (app.db, per-user) — CRUD-UI pattern
-│   │   │   └── index.tsx
-│   │   └── benutzer/            # User management (admin-only) — CRUD-UI pattern
-│   │       ├── index.tsx           # List
-│   │       ├── new.tsx             # Create form
-│   │       └── [userId]/edit.tsx   # Edit form
-│   ├── router.tsx        # React Router v7 configuration
-│   ├── main.tsx          # App entry point (ReactDOM.createRoot)
-│   ├── App.tsx           # Root component (ToastProvider > RouterProvider)
-│   ├── style.css         # Global styles (Tailwind + CSS variables, dark-first tokens)
-│   └── vite-env.d.ts     # Vite environment types
-├── public/               # Static assets
-├── eslint.config.mjs
-├── vite.config.ts
-├── tsconfig.json
-├── tsconfig.app.json
-├── components.json        # shadcn/ui (React) config
-└── .prettierrc
+frontend/src/  (5 Dateien)
+├── components/  (8 Dateien)  — Shared Components
+│   └── ui/  (26 Dateien)  — shadcn/ui-Primitives (CLI-generiert, nicht editieren)
+├── context/  (1 Datei)  — React-Context-Provider
+├── hooks/  (4 Dateien)  — React-Hooks (useX)
+├── lib/  (4 Dateien)  — Utilities & Helfer
+└── pages/  (5 Dateien)  — Seiten (React Router)
+    ├── benutzer/  (2 Dateien)
+    │   └── [userId]/  (1 Datei)
+    └── todos/  (1 Datei)
 ```
+
+<!-- END: folder-structure (auto-generiert – nicht von Hand editieren) -->
+
+Wichtige Seiten: `pages/theme-preview.tsx` ist die verbindliche visuelle Referenz des
+Design-Systems; `pages/todos/` und `pages/benutzer/` sind die beiden CRUD-UI-Beispiele
+(per-user bzw. admin-only).
 
 ## Code Style
 
@@ -183,6 +162,30 @@ frontend/
   ```
 - `DListRow` accepts optional `href` prop to render as a `<Link>` (clickable card row).
 - `head` prop (`true` or omitted) renders header row without card styling.
+
+## Wiederverwendbare Components
+
+Dieses Kapitel wird automatisch gepflegt (Stop-Hook `update-steering.sh`).
+Es listet die wiederverwendbaren Shared Components aus `frontend/src/components/`
+(Top-Level, ohne generiertes `ui/`) mit je einem Satz, damit sie bei neuen Features
+bevorzugt wiederverwendet statt neu gebaut werden. Der Bereich zwischen den Markern
+wird bei Frontend-Änderungen neu generiert — außerhalb der Marker von Hand
+geschriebene Inhalte bleiben unangetastet.
+
+<!-- BEGIN: reusable-components (auto-generiert – nicht von Hand editieren) -->
+
+| Component | Zweck (1 Satz) | Wiederverwenden für |
+|-----------|-------|---------|
+| **AppBreadcrumb** | Breadcrumb-Navigation; Crumbs mit `href` rendern als `<Link>`, der letzte als statischer Text. | Kontextnavigation auf Detail- und verschachtelten Seiten. |
+| **AppLogo** | Brand-Mark der App. | Logo-Anzeige in Landing-Pages, Modal-Headern und Formularen. |
+| **AppToast** | Globale Toast-Benachrichtigungen (Bottom-Center via Portal, stapelbar, Auto-Dismiss). | Erfolgs-/Fehler-Rückmeldungen und Bestätigungen über `useToast()`. |
+| **CreateButton** | Runder „+"-Button, der zu einer Formular-Route navigiert. | „Neu erstellen"-Action oben rechts (über `PageHeader actions`) in Listen-Seiten. |
+| **DList** | Container für Card-basierte Listen mit optionaler Kopfzeile. | Daten-Grids und strukturierte Listen von Datensätzen. |
+| **DListRow** | Einzelne Card-Zeile in DList, optional als Link-Zeile oder statische Kopfzeile. | Tabellarische Einträge mit Klick-Navigation oder Header-Rows. |
+| **Navbar** | Sticky Top-Navigation mit Blur-Backdrop, Brand-Mark, Nav-Links und User-Menü. | App-weite Top-Navigation (nicht duplizieren). |
+| **PageHeader** | Seitenkopf mit Titel, Untertitel, optionalem Leading-Icon und Actions-Slot. | Einheitlicher Kopf für Listen- und Detailseiten. |
+
+<!-- END: reusable-components (auto-generiert – nicht von Hand editieren) -->
 
 ## State Management
 

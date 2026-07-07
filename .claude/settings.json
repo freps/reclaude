@@ -27,13 +27,52 @@
       "Bash(bun run *)",
       "Bash(npm show *)",
       "Bash(git merge *)",
-      "Bash(git stash *)"
+      "Bash(git stash *)",
+      "mcp__chrome-devtools__*"
     ],
     "deny": [
       "Bash(git push:*)",
       "Bash(bun run dev)",
       "Bash(bun run dev:*)",
-      "Bash(bun run start)"
+      "Bash(bun run start)",
+      "Bash(git reset --hard *)",
+      "Bash(git clean *)"
     ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR/.claude/hooks/lint-fix.sh\"",
+            "timeout": 180,
+            "statusMessage": "lint:fix (frontend/backend)"
+          },
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR/.claude/hooks/steering-dirty.sh\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR/.claude/hooks/update-steering.sh\"",
+            "timeout": 620,
+            "statusMessage": "Steering: Component-/Baustein-Kapitel aktualisieren",
+            "async": true
+          }
+        ]
+      }
+    ]
+  },
+  "worktree": {
+    "bgIsolation": "none"
   }
 }

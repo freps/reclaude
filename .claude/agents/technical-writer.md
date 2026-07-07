@@ -27,6 +27,15 @@ Do NOT update steering docs for:
 - Bug fixes.
 - Minor refactors.
 
+## Hands off: auto-managed catalog sections
+
+The steering docs contain auto-generated catalog chapters wrapped in HTML markers:
+
+- `frontend.md` — "Wiederverwendbare Components" between `<!-- BEGIN: reusable-components -->` / `<!-- END: reusable-components -->`, plus the folder-structure tree between `<!-- BEGIN: folder-structure -->` / `<!-- END: folder-structure -->`
+- `backend.md` — "Wiederverwendbare Bausteine" between `<!-- BEGIN: reusable-backend -->` / `<!-- END: reusable-backend -->`, plus the folder-structure tree
+
+These are maintained continuously by hooks (`steering-tree.ts` for the folder tree, the Stop-hook `update-steering.sh` for the catalogs) and regenerated on every frontend/backend change. **Never edit inside these marker regions and never re-catalog the same components/helpers by hand elsewhere** — that is the hook's job. Focus on what the hook cannot do: new patterns/conventions (prose), new dependencies (tech stack), and README/CLAUDE.md.
+
 ## When to Update README / CLAUDE.md
 
 Update `README.md` or `CLAUDE.md` ONLY if:
