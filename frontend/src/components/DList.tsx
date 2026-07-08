@@ -5,8 +5,8 @@ type Props = {
   head?: ReactNode;
 };
 
-// Card-Row-Liste aus dem Prototyp (dlist / dlist-head / dlist-row):
-// Kopfzeile ohne Box, darunter jede Zeile als eigene Card mit Abstand.
+// Card-row list from the prototype (dlist / dlist-head / dlist-row):
+// header row without a box, below it each row as its own card with spacing.
 export default function DList({ children, head }: Props) {
   return (
     <div>

@@ -14,35 +14,35 @@
 
 ## Folder Structure
 
-Top-Level (von Hand gepflegt): `public/` (Static Assets), `eslint.config.mjs`,
+Top level (maintained by hand): `public/` (static assets), `eslint.config.mjs`,
 `vite.config.ts`, `tsconfig.json` / `tsconfig.app.json`, `components.json`
-(shadcn/ui-Config), `.prettierrc`. Entry-Files in `src/`: `main.tsx` (ReactDOM),
+(shadcn/ui config), `.prettierrc`. Entry files in `src/`: `main.tsx` (ReactDOM),
 `App.tsx` (ToastProvider > RouterProvider), `router.tsx` (React Router v7), `style.css`
-(Tailwind + dark-first Tokens), `vite-env.d.ts` (Vite-Env-Typen).
+(Tailwind + dark-first tokens), `vite-env.d.ts` (Vite env types).
 
-Der `src/`-Baum wird automatisch gepflegt (Hook-Script `steering-tree.ts`) — der Bereich
-zwischen den Markern wird bei Frontend-Änderungen neu generiert.
+The `src/` tree is maintained automatically (hook script `steering-tree.ts`) — the region
+between the markers is regenerated on frontend changes.
 
-<!-- BEGIN: folder-structure (auto-generiert – nicht von Hand editieren) -->
+<!-- BEGIN: folder-structure (auto-generated — do not edit by hand) -->
 
 ```
-frontend/src/  (5 Dateien)
-├── components/  (8 Dateien)  — Shared Components
-│   └── ui/  (26 Dateien)  — shadcn/ui-Primitives (CLI-generiert, nicht editieren)
-├── context/  (1 Datei)  — React-Context-Provider
-├── hooks/  (4 Dateien)  — React-Hooks (useX)
-├── lib/  (4 Dateien)  — Utilities & Helfer
-└── pages/  (5 Dateien)  — Seiten (React Router)
-    ├── benutzer/  (2 Dateien)
-    │   └── [userId]/  (1 Datei)
-    └── todos/  (1 Datei)
+frontend/src/  (5 files)
+├── components/  (8 files)  — Shared components
+│   └── ui/  (26 files)  — shadcn/ui primitives (CLI-generated, do not edit)
+├── context/  (1 file)  — React context providers
+├── hooks/  (4 files)  — React hooks (useX)
+├── lib/  (4 files)  — Utilities & helpers
+└── pages/  (5 files)  — Pages (React Router)
+    ├── todos/  (1 file)
+    └── users/  (2 files)
+        └── [userId]/  (1 file)
 ```
 
-<!-- END: folder-structure (auto-generiert – nicht von Hand editieren) -->
+<!-- END: folder-structure (auto-generated — do not edit by hand) -->
 
-Wichtige Seiten: `pages/theme-preview.tsx` ist die verbindliche visuelle Referenz des
-Design-Systems; `pages/todos/` und `pages/benutzer/` sind die beiden CRUD-UI-Beispiele
-(per-user bzw. admin-only).
+Key pages: `pages/theme-preview.tsx` is the authoritative visual reference of the
+design system; `pages/todos/` and `pages/users/` are the two CRUD-UI examples
+(per-user and admin-only, respectively).
 
 ## Code Style
 
@@ -96,7 +96,7 @@ Design-Systems; `pages/todos/` und `pages/benutzer/` sind die beiden CRUD-UI-Bei
 - Hooks: `useX` pattern (`useAuth.ts`, `useToast.ts`).
 - Context files: `XContext.tsx` (e.g., `ToastContext.tsx`).
 - Types: PascalCase, exported from `types/` or co-located.
-- Pages: kebab-case for route segments (`benutzer/[userId]/edit.tsx` → `/benutzer/:userId/edit`).
+- Pages: kebab-case for route segments (`users/[userId]/edit.tsx` → `/users/:userId/edit`).
 - Utilities: camelCase functions in `lib/`.
 
 ### Styling
@@ -163,29 +163,29 @@ Design-Systems; `pages/todos/` und `pages/benutzer/` sind die beiden CRUD-UI-Bei
 - `DListRow` accepts optional `href` prop to render as a `<Link>` (clickable card row).
 - `head` prop (`true` or omitted) renders header row without card styling.
 
-## Wiederverwendbare Components
+## Reusable Components
 
-Dieses Kapitel wird automatisch gepflegt (Stop-Hook `update-steering.sh`).
-Es listet die wiederverwendbaren Shared Components aus `frontend/src/components/`
-(Top-Level, ohne generiertes `ui/`) mit je einem Satz, damit sie bei neuen Features
-bevorzugt wiederverwendet statt neu gebaut werden. Der Bereich zwischen den Markern
-wird bei Frontend-Änderungen neu generiert — außerhalb der Marker von Hand
-geschriebene Inhalte bleiben unangetastet.
+This chapter is maintained automatically (Stop hook `update-steering.sh`).
+It lists the reusable shared components from `frontend/src/components/`
+(top level, excluding the generated `ui/`) with one sentence each, so they are
+reused for new features instead of being rebuilt. The region between the markers
+is regenerated on frontend changes — content written by hand outside the markers
+is left untouched.
 
-<!-- BEGIN: reusable-components (auto-generiert – nicht von Hand editieren) -->
+<!-- BEGIN: reusable-components (auto-generated — do not edit by hand) -->
 
-| Component | Zweck (1 Satz) | Wiederverwenden für |
+| Component | Purpose (1 sentence) | Reuse for |
 |-----------|-------|---------|
-| **AppBreadcrumb** | Breadcrumb-Navigation; Crumbs mit `href` rendern als `<Link>`, der letzte als statischer Text. | Kontextnavigation auf Detail- und verschachtelten Seiten. |
-| **AppLogo** | Brand-Mark der App. | Logo-Anzeige in Landing-Pages, Modal-Headern und Formularen. |
-| **AppToast** | Globale Toast-Benachrichtigungen (Bottom-Center via Portal, stapelbar, Auto-Dismiss). | Erfolgs-/Fehler-Rückmeldungen und Bestätigungen über `useToast()`. |
-| **CreateButton** | Runder „+"-Button, der zu einer Formular-Route navigiert. | „Neu erstellen"-Action oben rechts (über `PageHeader actions`) in Listen-Seiten. |
-| **DList** | Container für Card-basierte Listen mit optionaler Kopfzeile. | Daten-Grids und strukturierte Listen von Datensätzen. |
-| **DListRow** | Einzelne Card-Zeile in DList, optional als Link-Zeile oder statische Kopfzeile. | Tabellarische Einträge mit Klick-Navigation oder Header-Rows. |
-| **Navbar** | Sticky Top-Navigation mit Blur-Backdrop, Brand-Mark, Nav-Links und User-Menü. | App-weite Top-Navigation (nicht duplizieren). |
-| **PageHeader** | Seitenkopf mit Titel, Untertitel, optionalem Leading-Icon und Actions-Slot. | Einheitlicher Kopf für Listen- und Detailseiten. |
+| **AppBreadcrumb** | Breadcrumb navigation with clickable links and a static final crumb. | Contextual navigation on detail and nested pages. |
+| **AppLogo** | Brand mark ("R" icon and "Reclaude" text) of the app. | Logo display in landing pages, modal headers, and forms. |
+| **AppToast** | Global toast notifications (bottom-center via portal, stackable, auto-dismiss). | Success/error feedback and confirmations via `useToast()`. |
+| **CreateButton** | Round "+" button with tooltip that navigates to a form route. | "Create new" action at the top right (via `PageHeader actions`) on list pages. |
+| **DList** | Container for card-based lists with an optional header row and vertical spacing. | Data grids and structured lists of records. |
+| **DListRow** | Single card row inside DList, optionally as a clickable link row or static header. | Tabular entries with click navigation or header rows. |
+| **Navbar** | Sticky top navigation with blur backdrop, brand mark, nav links, and user menu. | App-wide top navigation (do not duplicate). |
+| **PageHeader** | Page header with eyebrow label, title, subtitle, optional leading icon, and actions slot. | Consistent header for list and detail pages. |
 
-<!-- END: reusable-components (auto-generiert – nicht von Hand editieren) -->
+<!-- END: reusable-components (auto-generated — do not edit by hand) -->
 
 ## State Management
 
@@ -204,83 +204,83 @@ geschriebene Inhalte bleiben unangetastet.
 - **Router Config**: `src/router.tsx` with `createBrowserRouter`.
 - **Manual Routes**: All routes defined explicitly (no file-based auto-routing).
 - **URL Structure**:
-  - Public: `/`, `/login`, `/impressum`, `/theme-preview`
-  - Protected (`AuthGuard`): `/profil`, `/todos`
-  - Admin-only (`AdminGuard`): `/benutzer`, `/benutzer/new`, `/benutzer/:userId/edit`
+  - Public: `/`, `/login`, `/imprint`, `/theme-preview`
+  - Protected (`AuthGuard`): `/profile`, `/todos`
+  - Admin-only (`AdminGuard`): `/users`, `/users/new`, `/users/:userId/edit`
 - **AuthGuard**: Wrapper component checks `useAuth().session.isPending` and `session.data`, redirects to `/login` if not authenticated.
 - **AdminGuard**: nested under `AuthGuard`; checks `session.data?.user?.role === "admin"`.
 - **ScrollRestoration**: Built-in `<ScrollRestoration/>` in root layout handles scroll position across navigations.
 - **Programmatic Navigation**: Use `useNavigate()` hook from React Router.
 - **Links**: Use `<Link to="...">` from React Router (not `<a>` tags).
 
-## Listen- & Formular-Pattern (CRUD-UI)
+## List & Form Pattern (CRUD UI)
 
-Create/Edit-Operationen erfolgen **immer über eigene Routen**, nie über Modale/Dialoge.
-Ein „+"-Button oben rechts navigiert zu einer separaten Formularseite mit eigenem Back-Button.
-Modale (`AlertDialog`/`Dialog`) sind ausschließlich Bestätigungen (z. B. Löschen) vorbehalten —
-niemals Create/Edit-Formulare.
+Create/edit operations **always use dedicated routes**, never modals/dialogs.
+A "+" button at the top right navigates to a separate form page with its own back button.
+Modals (`AlertDialog`/`Dialog`) are reserved exclusively for confirmations (e.g. delete) —
+never for create/edit forms.
 
-Das ist die verbindliche Default-Struktur für jede Listen-/CRUD-Seite in dieser App.
+This is the mandatory default structure for every list/CRUD page in this app.
 
-### Routen-Struktur
+### Route Structure
 
-Pro Ressource (z. B. `benutzer`) drei Routen, alle unter dem jeweiligen Guard:
+Per resource (e.g. `users`) three routes, all under the respective guard:
 
 ```ts
-{ path: "/benutzer", element: <BenutzerListPage /> },
-{ path: "/benutzer/new", element: <BenutzerNewPage /> },
-{ path: "/benutzer/:userId/edit", element: <BenutzerEditPage /> },
+{ path: "/users", element: <UserListPage /> },
+{ path: "/users/new", element: <UserNewPage /> },
+{ path: "/users/:userId/edit", element: <UserEditPage /> },
 ```
 
-Datei-Layout entsprechend (Folder pro Ressource, dynamische Segmente in `[...]`):
+File layout to match (one folder per resource, dynamic segments in `[...]`):
 
 ```
-src/pages/benutzer/
-├── index.tsx              # Liste
-├── new.tsx                # Create-Formular
+src/pages/users/
+├── index.tsx              # List
+├── new.tsx                # Create form
 └── [userId]/
-    └── edit.tsx           # Edit-Formular
+    └── edit.tsx           # Edit form
 ```
 
-### Listenseite
+### List Page
 
 - `Navbar` + `AppBreadcrumb` + `PageHeader`.
-- „+"-Button oben rechts via `actions={<CreateButton to="/<resource>/new" tooltipText="…" />}`.
-- Zeilen-Aktion „Bearbeiten" navigiert zur Edit-Route (`navigate("/<resource>/<id>/edit")`).
-- Direkte Status-Toggles (z. B. Aktivieren/Deaktivieren) dürfen inline auf der Liste bleiben.
+- "+" button at the top right via `actions={<CreateButton to="/<resource>/new" tooltipText="…" />}`.
+- Row action "Edit" navigates to the edit route (`navigate("/<resource>/<id>/edit")`).
+- Direct status toggles (e.g. activate/deactivate) may stay inline on the list.
 
-### Formularseite (Create/Edit)
+### Form Page (Create/Edit)
 
-- Eigene Route, **`Navbar`** (jede Top-Level-Seite rendert die Navbar selbst), `AppBreadcrumb` mit
-  Eltern-Crumb + aktuellem Schritt.
-- `PageHeader` mit `leading`-Icon, Titel und Subtitle.
-- Formular in `bg-card rounded-2xl border`-Karte; Felder im `grid md:grid-cols-[12rem_1fr]`-Raster.
-- **Sticky Footer**: Back-Button (`ChevronLeft`, zurück zur Liste) links, Save-Button rechts;
-  der Submit-Button referenziert das Form via `form="<id>"` (Formular und Footer sind separate Blöcke).
-- Nach erfolgreichem Speichern: `showToast(...)` + `navigate("/<resource>")`.
+- Dedicated route, **`Navbar`** (every top-level page renders the navbar itself), `AppBreadcrumb`
+  with parent crumb + current step.
+- `PageHeader` with `leading` icon, title, and subtitle.
+- Form inside a `bg-card rounded-2xl border` card; fields in a `grid md:grid-cols-[12rem_1fr]` grid.
+- **Sticky footer**: back button (`ChevronLeft`, back to the list) on the left, save button on the
+  right; the submit button references the form via `form="<id>"` (form and footer are separate blocks).
+- After a successful save: `showToast(...)` + `navigate("/<resource>")`.
 
-### Kanonische Referenz-Beispiele
+### Canonical Reference Examples
 
-Bevor eine neue CRUD-Seite gebaut wird, als Vorlage kopieren:
+Before building a new CRUD page, copy one of these as a template:
 
-- **Einfache Liste mit Inline-Create** (eine Ressource in `app.db`, per-User): `src/pages/todos/index.tsx`
-- **Liste**: `src/pages/benutzer/index.tsx`
-- **Create**: `src/pages/benutzer/new.tsx`
-- **Edit**: `src/pages/benutzer/[userId]/edit.tsx`
+- **Simple list with inline create** (one resource in `app.db`, per-user): `src/pages/todos/index.tsx`
+- **List**: `src/pages/users/index.tsx`
+- **Create**: `src/pages/users/new.tsx`
+- **Edit**: `src/pages/users/[userId]/edit.tsx`
 
-### Wiederverwendbare Bausteine
+### Reusable Building Blocks
 
-- `CreateButton` (`src/components/CreateButton.tsx`) — der runde „+"-Button (oben rechts über
+- `CreateButton` (`src/components/CreateButton.tsx`) — the round "+" button (top right via
   `PageHeader actions`). Props: `to`, `tooltipText`.
-- `PageHeader` (`src/components/PageHeader.tsx`) — Titel/Subtitle/`leading`/`actions`.
-- API-Logik pro Ressource in `src/lib/<resource>.ts` (`listX`, `findX`, `createX`, `updateX`, …)
-  — analog `src/lib/users.ts` und `src/lib/todos.ts` — nicht inline in den Seiten.
+- `PageHeader` (`src/components/PageHeader.tsx`) — title/subtitle/`leading`/`actions`.
+- API logic per resource in `src/lib/<resource>.ts` (`listX`, `findX`, `createX`, `updateX`, …)
+  — following `src/lib/users.ts` and `src/lib/todos.ts` — never inline in pages.
 
-### Anti-Pattern
+### Anti-Patterns
 
-- Keine `AlertDialog`/`Dialog` für Create/Edit-Formulare (nur für Bestätigungen).
-- Keine Form-State in der Listenseite (`mode`/`editingId`/`open`) — das übernimmt die Route.
-- Keine fetch-Helper inline in Seiten — in `lib/` auslagern.
+- No `AlertDialog`/`Dialog` for create/edit forms (confirmations only).
+- No form state on the list page (`mode`/`editingId`/`open`) — the route handles that.
+- No fetch helpers inline in pages — extract them to `lib/`.
 
 ## Inline Comments
 

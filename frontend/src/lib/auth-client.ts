@@ -7,8 +7,8 @@ import { createAuthClient } from "better-auth/react";
 // `window.location.origin` + the default basePath "/api/auth" — matching the
 // backend handler and the Vite dev proxy.
 //
-// `adminClient` ergänzt die Session-Typen um `role`/`banned` (Server-seitig via
-// admin-Plugin) und stellt die Admin-Client-Actions bereit.
+// `adminClient` extends the session types with `role`/`banned` (server-side via
+// the admin plugin) and provides the admin client actions.
 export const authClient = createAuthClient({
   plugins: [adminClient()],
 });

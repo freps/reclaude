@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# PostToolUse-Hook (leichtgewichtig): setzt ein "dirty"-Flag pro Seite, sobald
-# eine Datei unter frontend/src/ bzw. backend/src/ geschrieben wurde. Das
-# eigentliche Steering-Update macht der Stop-Hook (update-steering.sh) — nur
-# EINMAL pro Task, nicht pro Edit.
+# PostToolUse hook (lightweight): sets a "dirty" flag per side as soon as a
+# file under frontend/src/ or backend/src/ was written. The actual steering
+# update is done by the Stop hook (update-steering.sh) — only ONCE per task,
+# not per edit.
 
 set -uo pipefail
 

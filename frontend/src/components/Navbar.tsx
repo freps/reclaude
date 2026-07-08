@@ -40,12 +40,12 @@ export default function Navbar() {
 
         <div className="hidden items-center gap-1 text-sm font-medium sm:flex">
           {[
-            { to: "/", label: "Startseite", end: true },
+            { to: "/", label: "Home", end: true },
             ...(session.data ? [{ to: "/todos", label: "Todos", end: false }] : []),
             ...(session.data?.user?.role === "admin"
-              ? [{ to: "/benutzer", label: "Benutzer", end: false }]
+              ? [{ to: "/users", label: "Users", end: false }]
               : []),
-            { to: "/impressum", label: "Impressum", end: false },
+            { to: "/imprint", label: "Imprint", end: false },
           ].map(({ to, label, end }) => (
             <NavLink
               key={to}
@@ -80,8 +80,8 @@ export default function Navbar() {
                   <ChevronDown className="size-4 shrink-0 opacity-70" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem onSelect={() => navigate("/profil")}>Profil</DropdownMenuItem>
-                  <DropdownMenuItem onSelect={handleSignOut}>Abmelden</DropdownMenuItem>
+                  <DropdownMenuItem onSelect={() => navigate("/profile")}>Profile</DropdownMenuItem>
+                  <DropdownMenuItem onSelect={handleSignOut}>Sign out</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             )}

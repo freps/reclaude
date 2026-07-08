@@ -5,16 +5,16 @@ import { Button } from "@/components/ui/button/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 type Props = {
-  /** Ziel-Route der „+“-Aktion (z. B. "/benutzer/new"). */
+  /** Target route of the "+" action (e.g. "/users/new"). */
   to: string;
-  /** Tooltip-Text, der den Zweck der Aktion erklärt. */
+  /** Tooltip text explaining the purpose of the action. */
   tooltipText: string;
 };
 
 /**
- * Runder „+“-Button oben rechts (via PageHeader `actions`).
- * Navigiert zu einer eigenen Formular-Route — siehe Steering-Doc
- * „Listen- & Formular-Pattern (CRUD-UI)“. Keine Modale für Create/Edit.
+ * Round "+" button at the top right (via PageHeader `actions`).
+ * Navigates to a dedicated form route — see the steering doc
+ * "List & Form Pattern (CRUD UI)". No modals for create/edit.
  */
 export default function CreateButton({ to, tooltipText }: Props) {
   const navigate = useNavigate();

@@ -20,7 +20,7 @@ import {
 import { useToast } from "@/hooks/useToast";
 import { banUser, formatDate, listUsers, reactivateUser, type UserDTO } from "@/lib/users";
 
-export default function BenutzerListPage() {
+export default function UserListPage() {
   const navigate = useNavigate();
   const { showToast } = useToast();
 
@@ -34,7 +34,7 @@ export default function BenutzerListPage() {
     try {
       setUsers(await listUsers());
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Benutzer konnten nicht geladen werden.");
+      setError(e instanceof Error ? e.message : "Users could not be loaded.");
     } finally {
       setIsLoading(false);
     }
@@ -49,14 +49,14 @@ export default function BenutzerListPage() {
     try {
       if (user.banned) {
         await reactivateUser(user.id);
-        showToast("Benutzer reaktiviert.");
+        showToast("User reactivated.");
       } else {
         await banUser(user.id);
-        showToast("Benutzer deaktiviert.");
+        showToast("User deactivated.");
       }
       await loadUsers();
     } catch (e) {
-      const msg = e instanceof Error ? e.message : "Status konnte nicht geändert werden.";
+      const msg = e instanceof Error ? e.message : "Status could not be changed.";
       setError(msg);
       showToast(msg);
     }
@@ -67,18 +67,18 @@ export default function BenutzerListPage() {
       <Navbar />
 
       <main className="mx-auto max-w-6xl px-6 pb-16">
-        <AppBreadcrumb crumbs={[{ label: "Benutzerverwaltung" }]} />
+        <AppBreadcrumb crumbs={[{ label: "User management" }]} />
 
         <div className="py-6">
           <PageHeader
-            title="Benutzerverwaltung"
-            subtitle="Benutzer anlegen, Rollen vergeben und Accounts aktivieren/deaktivieren."
+            title="User management"
+            subtitle="Create users, assign roles, and activate/deactivate accounts."
             leading={
               <span className="border-primary/35 bg-primary/10 text-primary inline-flex size-12 shrink-0 items-center justify-center rounded-[0.875rem] border">
                 <ShieldCheck className="size-6" />
               </span>
             }
-            actions={<CreateButton to="/benutzer/new" tooltipText="Neuen Benutzer anlegen" />}
+            actions={<CreateButton to="/users/new" tooltipText="Create a new user" />}
           />
         </div>
 
@@ -94,18 +94,18 @@ export default function BenutzerListPage() {
             <TableHeader>
               <TableRow>
                 <TableHead>Name</TableHead>
-                <TableHead>E-Mail</TableHead>
-                <TableHead>Rolle</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Role</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead>Erstellt am</TableHead>
-                <TableHead className="text-right">Aktionen</TableHead>
+                <TableHead>Created</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {isLoading ? (
-                <TableEmpty>Laden…</TableEmpty>
+                <TableEmpty>Loading…</TableEmpty>
               ) : users.length === 0 ? (
-                <TableEmpty>Keine Benutzer vorhanden.</TableEmpty>
+                <TableEmpty>No users yet.</TableEmpty>
               ) : (
                 users.map((user) => (
                   <TableRow key={user.id}>
@@ -118,31 +118,31 @@ export default function BenutzerListPage() {
                     <TableCell>{user.email}</TableCell>
                     <TableCell>
                       <Badge variant={user.role === "admin" ? "default" : "secondary"}>
-                        {user.role === "admin" ? "Admin" : "Benutzer"}
+                        {user.role === "admin" ? "Admin" : "User"}
                       </Badge>
                     </TableCell>
                     <TableCell>
                       <Badge variant={user.banned ? "destructive" : "outline"}>
-                        {user.banned ? "Inaktiv" : "Aktiv"}
+                        {user.banned ? "Inactive" : "Active"}
                       </Badge>
                     </TableCell>
                     <TableCell>{formatDate(user.createdAt)}</TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
                         <Button
-                          onClick={() => navigate(`/benutzer/${user.id}/edit`)}
+                          onClick={() => navigate(`/users/${user.id}/edit`)}
                           size="sm"
                           variant="outline"
                         >
                           <UserPen className="size-4" />
-                          Bearbeiten
+                          Edit
                         </Button>
                         <Button
                           onClick={() => void toggleBan(user)}
                           size="sm"
                           variant={user.banned ? "secondary" : "destructive"}
                         >
-                          {user.banned ? "Aktivieren" : "Deaktivieren"}
+                          {user.banned ? "Activate" : "Deactivate"}
                         </Button>
                       </div>
                     </TableCell>

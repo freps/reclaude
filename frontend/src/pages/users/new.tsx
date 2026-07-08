@@ -18,7 +18,7 @@ import {
 import { useToast } from "@/hooks/useToast";
 import { createUser, type Role } from "@/lib/users";
 
-export default function BenutzerNewPage() {
+export default function UserNewPage() {
   const navigate = useNavigate();
   const { showToast } = useToast();
 
@@ -43,10 +43,10 @@ export default function BenutzerNewPage() {
         password,
         role,
       });
-      showToast("Benutzer angelegt.");
-      await navigate("/benutzer");
+      showToast("User created.");
+      await navigate("/users");
     } catch (e) {
-      showToast(e instanceof Error ? e.message : "Benutzer konnte nicht angelegt werden.");
+      showToast(e instanceof Error ? e.message : "User could not be created.");
     } finally {
       setSaving(false);
     }
@@ -57,12 +57,12 @@ export default function BenutzerNewPage() {
       <Navbar />
       <div className="mx-auto max-w-4xl space-y-6 px-6 pb-32">
         <AppBreadcrumb
-          crumbs={[{ label: "Benutzerverwaltung", href: "/benutzer" }, { label: "Neuer Benutzer" }]}
+          crumbs={[{ label: "User management", href: "/users" }, { label: "New user" }]}
         />
 
         <PageHeader
-          title="Neuen Benutzer anlegen"
-          subtitle="Legt einen neuen Benutzer an. Das Initialpasswort kann der Benutzer später in seinem Profil ändern."
+          title="Create a new user"
+          subtitle="Creates a new user. The user can change the initial password later in their profile."
           leading={
             <span className="border-primary/35 bg-primary/10 text-primary inline-flex size-12 shrink-0 items-center justify-center rounded-[0.875rem] border">
               <ShieldCheck className="size-6" />
@@ -71,7 +71,7 @@ export default function BenutzerNewPage() {
         />
 
         <form
-          id="benutzer-new-form"
+          id="user-new-form"
           className="flex flex-col gap-6"
           onSubmit={(e) => {
             e.preventDefault();
@@ -90,13 +90,13 @@ export default function BenutzerNewPage() {
                   autoFocus
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Vollständiger Name"
+                  placeholder="Full name"
                 />
               </div>
 
               <div className="grid gap-4 md:grid-cols-[12rem_1fr] md:items-center">
                 <Label htmlFor="u-email" className="text-[0.8125rem]">
-                  E-Mail
+                  Email
                 </Label>
                 <Input
                   id="u-email"
@@ -104,20 +104,20 @@ export default function BenutzerNewPage() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@firma.de"
+                  placeholder="name@example.com"
                 />
               </div>
 
               <div className="grid gap-4 md:grid-cols-[12rem_1fr] md:items-center">
                 <Label htmlFor="u-role" className="text-[0.8125rem]">
-                  Rolle
+                  Role
                 </Label>
                 <Select onValueChange={(v) => setRole(v as Role)} value={role}>
                   <SelectTrigger id="u-role">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="user">Benutzer</SelectItem>
+                    <SelectItem value="user">User</SelectItem>
                     <SelectItem value="admin">Admin</SelectItem>
                   </SelectContent>
                 </Select>
@@ -125,7 +125,7 @@ export default function BenutzerNewPage() {
 
               <div className="grid gap-4 md:grid-cols-[12rem_1fr] md:items-center">
                 <Label htmlFor="u-password" className="text-[0.8125rem]">
-                  Initialpasswort
+                  Initial password
                 </Label>
                 <Input
                   id="u-password"
@@ -145,17 +145,17 @@ export default function BenutzerNewPage() {
       {/* Sticky footer */}
       <div className="bg-background/90 fixed right-0 bottom-0 left-0 z-10 border-t backdrop-blur-sm">
         <div className="mx-auto flex max-w-4xl items-center justify-between gap-4 px-6 py-3">
-          <Button variant="ghost" onClick={() => void navigate("/benutzer")}>
+          <Button variant="ghost" onClick={() => void navigate("/users")}>
             <ChevronLeft data-icon="inline-start" />
-            Zurück zur Übersicht
+            Back to overview
           </Button>
-          <Button type="submit" form="benutzer-new-form" disabled={!canSave}>
+          <Button type="submit" form="user-new-form" disabled={!canSave}>
             {saving ? (
               <Loader2 data-icon="inline-start" className="animate-spin" />
             ) : (
               <Save data-icon="inline-start" />
             )}
-            Benutzer anlegen
+            Create user
           </Button>
         </div>
       </div>

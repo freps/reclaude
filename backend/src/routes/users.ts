@@ -27,26 +27,26 @@ type UserDTO = {
 
 function requireRole(value: string): UserRole {
   if (value !== "admin" && value !== "user") {
-    throw new HTTPException(400, { message: "Rolle muss 'admin' oder 'user' sein." });
+    throw new HTTPException(400, { message: "Role must be 'admin' or 'user'." });
   }
   return value;
 }
 
-/** Übersetzt einen better-auth APIError in eine HTTPException mit passendem Status. */
+/** Translates a better-auth APIError into an HTTPException with a matching status. */
 function throwFromBetterAuthError(e: unknown, fallback: string): never {
   const err = e as AdminApiError;
   const code = err?.body?.code ?? "";
   const message = err?.body?.message;
 
   if (code.includes("USER_ALREADY_EXISTS")) {
-    throw new HTTPException(409, { message: "Ein Benutzer mit dieser E-Mail existiert bereits." });
+    throw new HTTPException(409, { message: "A user with this email already exists." });
   }
   if (code.includes("USER_NOT_FOUND")) {
-    throw new HTTPException(404, { message: "Benutzer nicht gefunden." });
+    throw new HTTPException(404, { message: "User not found." });
   }
   if (code.includes("PASSWORD_CANNOT_BE_UPDATED")) {
     throw new HTTPException(400, {
-      message: "Passwort kann nicht über diesen Endpoint gesetzt werden.",
+      message: "Password cannot be set via this endpoint.",
     });
   }
 
@@ -55,7 +55,7 @@ function throwFromBetterAuthError(e: unknown, fallback: string): never {
   throw new HTTPException(statusCode, { message: message ?? fallback });
 }
 
-/** Mappt einen better-auth User (aus listUsers) auf das Frontend-DTO. */
+/** Maps a better-auth user (from listUsers) to the frontend DTO. */
 function toUserDTO(user: {
   banned: boolean | null;
   createdAt: Date | string;
@@ -75,7 +75,7 @@ function toUserDTO(user: {
   };
 }
 
-// ── GET /  — alle Benutzer auflisten ──────────────────────────────────────────
+// ── GET /  — list all users ──────────────────────────────────────────────────
 app.get("/", async (c) => {
   const result = await auth.api.listUsers({
     headers: c.req.raw.headers,
@@ -85,7 +85,7 @@ app.get("/", async (c) => {
   return c.json({ users: users.map(toUserDTO) });
 });
 
-// ── POST /  — Benutzer anlegen ───────────────────────────────────────────────
+// ── POST /  — create a user ──────────────────────────────────────────────────
 app.post("/", async (c) => {
   const body = await c.req.json<{
     email: string;
@@ -95,7 +95,7 @@ app.post("/", async (c) => {
   }>();
 
   if (!body.email || !body.name || !body.password) {
-    throw new HTTPException(400, { message: "name, email und password sind erforderlich." });
+    throw new HTTPException(400, { message: "name, email, and password are required." });
   }
   const role = requireRole(body.role ?? "user");
 
@@ -106,22 +106,22 @@ app.post("/", async (c) => {
     })) as { user: Parameters<typeof toUserDTO>[0] };
     return c.json({ user: toUserDTO(res.user) }, 201);
   } catch (e) {
-    throwFromBetterAuthError(e, "Benutzer konnte nicht angelegt werden.");
+    throwFromBetterAuthError(e, "User could not be created.");
   }
 });
 
-// ── PATCH /:id  — Benutzer bearbeiten ────────────────────────────────────────
+// ── PATCH /:id  — update a user ──────────────────────────────────────────────
 app.patch("/:id", async (c) => {
   const targetId = c.req.param("id");
   const actor = c.get("user") as AuthUser;
 
-  // Regel 1: kein Selbst-Verändern (verbietet Self-Ban, Self-Delete, Self-Degradierung).
+  // Rule 1: no self-modification (forbids self-ban, self-delete, self-demotion).
   if (targetId === actor.id) {
-    throw new HTTPException(403, { message: "Sie können sich nicht selbst verändern." });
+    throw new HTTPException(403, { message: "You cannot modify your own account." });
   }
 
   const target = findUserById(targetId);
-  if (!target) throw new HTTPException(404, { message: "Benutzer nicht gefunden." });
+  if (!target) throw new HTTPException(404, { message: "User not found." });
 
   const body = await c.req.json<{
     banned?: boolean | undefined;
@@ -135,11 +135,11 @@ app.patch("/:id", async (c) => {
   const willBan = body.banned === true;
   const willDemote = target.role === "admin" && newRole === "user";
 
-  // Regel 2: mindestens 1 aktiver Admin muss bleiben. Nur das Bannen oder
-  // Degradieren eines Admins reduziert die Anzahl aktiver Admins — ein
-  // regulärer User darf auch im Single-Admin-Setup deaktiviert werden.
+  // Rule 2: at least 1 active admin must remain. Only banning or demoting an
+  // admin reduces the number of active admins — a regular user may be
+  // deactivated even in a single-admin setup.
   if (target.role === "admin" && (willBan || willDemote) && countActiveAdmins() <= 1) {
-    throw new HTTPException(403, { message: "Mindestens ein Admin muss aktiv bleiben." });
+    throw new HTTPException(403, { message: "At least one admin must remain active." });
   }
 
   const headers = c.req.raw.headers;
@@ -152,7 +152,7 @@ app.patch("/:id", async (c) => {
     try {
       await auth.api.adminUpdateUser({ body: { data, userId: targetId }, headers });
     } catch (e) {
-      throwFromBetterAuthError(e, "Benutzer konnte nicht aktualisiert werden.");
+      throwFromBetterAuthError(e, "User could not be updated.");
     }
   }
 
@@ -161,7 +161,7 @@ app.patch("/:id", async (c) => {
     try {
       await auth.api.setRole({ body: { role: newRole, userId: targetId }, headers });
     } catch (e) {
-      throwFromBetterAuthError(e, "Rolle konnte nicht gesetzt werden.");
+      throwFromBetterAuthError(e, "Role could not be set.");
     }
   }
 
@@ -173,11 +173,11 @@ app.patch("/:id", async (c) => {
         headers,
       });
     } catch (e) {
-      throwFromBetterAuthError(e, "Passwort konnte nicht gesetzt werden.");
+      throwFromBetterAuthError(e, "Password could not be set.");
     }
   }
 
-  // 4) banned (Status toggeln)
+  // 4) banned (toggle status)
   if (body.banned !== undefined) {
     try {
       if (willBan) {
@@ -186,35 +186,35 @@ app.patch("/:id", async (c) => {
         await auth.api.unbanUser({ body: { userId: targetId }, headers });
       }
     } catch (e) {
-      throwFromBetterAuthError(e, "Status konnte nicht geändert werden.");
+      throwFromBetterAuthError(e, "Status could not be changed.");
     }
   }
 
   const updated = findUserById(targetId);
-  if (!updated) throw new HTTPException(500, { message: "Benutzer nach Update nicht gefunden." });
+  if (!updated) throw new HTTPException(500, { message: "User not found after update." });
   return c.json({ user: toUserDTO(updated) });
 });
 
-// ── DELETE /:id  — deaktivieren (ban), kein hartes Löschen ────────────────────
+// ── DELETE /:id  — deactivate (ban), no hard delete ──────────────────────────
 app.delete("/:id", async (c) => {
   const targetId = c.req.param("id");
   const actor = c.get("user") as AuthUser;
 
   if (targetId === actor.id) {
-    throw new HTTPException(403, { message: "Sie können sich nicht selbst deaktivieren." });
+    throw new HTTPException(403, { message: "You cannot deactivate your own account." });
   }
 
   const target = findUserById(targetId);
-  if (!target) throw new HTTPException(404, { message: "Benutzer nicht gefunden." });
+  if (!target) throw new HTTPException(404, { message: "User not found." });
 
   if (target.role === "admin" && countActiveAdmins() <= 1) {
-    throw new HTTPException(403, { message: "Mindestens ein Admin muss aktiv bleiben." });
+    throw new HTTPException(403, { message: "At least one admin must remain active." });
   }
 
   try {
     await auth.api.banUser({ body: { userId: targetId }, headers: c.req.raw.headers });
   } catch (e) {
-    throwFromBetterAuthError(e, "Benutzer konnte nicht deaktiviert werden.");
+    throwFromBetterAuthError(e, "User could not be deactivated.");
   }
 
   return c.body(null, 204);

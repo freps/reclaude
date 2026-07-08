@@ -4,6 +4,8 @@ React 19 + TypeScript + Vite + TailwindCSS v4 + shadcn/ui
 
 ## Setup
 
+Installed via the workspace install from the repo root:
+
 ```sh
 bun install
 ```

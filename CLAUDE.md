@@ -13,6 +13,7 @@ Batteries-included boilerplate for classic frontend/backend apps with an agent-d
 ## Commands (from repo root)
 
 ```bash
+bun install      # installs all workspaces (root, frontend, backend)
 bun run dev      # frontend + backend in parallel (user only — agents never run this)
 bun run build    # build frontend to frontend/dist/
 bun run start    # serve API + frontend from backend on :3001
@@ -44,8 +45,8 @@ Agents communicate through a spec doc in `_spec/` (copied from `_spec/_template.
 
 Authoritative steering docs. Open the relevant one **before you grep** whenever a task touches
 that layer — including quick "where does X live?" questions, not just when writing code. These are
-not just style rules: each doc carries an auto-generated **file→purpose map** (the "Wiederverwendbare
-Components/Bausteine" table + folder-structure tree) that names the exact file and helper for every
+not just style rules: each doc carries an auto-generated **file→purpose map** (the "Reusable
+Components" / "Reusable Building Blocks" table + folder-structure tree) that names the exact file and helper for every
 reusable building block. Reading it is the fast path — it usually replaces a code search outright and
 stops you from re-implementing a helper that already exists. These auto-generated sections are
 maintained by hooks (see Hard Rules); never hand-edit inside their markers.

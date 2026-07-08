@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input/input";
 import { Label } from "@/components/ui/label/label";
 import { authClient } from "@/lib/auth-client";
 
-export default function ProfilPage() {
+export default function ProfilePage() {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -23,7 +23,7 @@ export default function ProfilPage() {
     setSuccess(false);
 
     if (newPassword !== confirmPassword) {
-      setError("Die neuen Passwörter stimmen nicht überein.");
+      setError("The new passwords do not match.");
       return;
     }
 
@@ -35,7 +35,7 @@ export default function ProfilPage() {
       });
 
       if (result.error) {
-        setError(result.error.message ?? "Passwort konnte nicht geändert werden.");
+        setError(result.error.message ?? "Password could not be changed.");
         return;
       }
 
@@ -56,13 +56,13 @@ export default function ProfilPage() {
         <div className="border-border bg-card w-full max-w-md rounded-xl border p-10">
           <div className="mb-8 text-center">
             <AppLogo />
-            <h2 className="text-2xl font-bold tracking-tight">Passwort ändern</h2>
-            <p className="text-muted-foreground mt-1.5 text-sm">Aktualisiere dein Passwort.</p>
+            <h2 className="text-2xl font-bold tracking-tight">Change password</h2>
+            <p className="text-muted-foreground mt-1.5 text-sm">Update your password.</p>
           </div>
 
           <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="current-password">Aktuelles Passwort</Label>
+              <Label htmlFor="current-password">Current password</Label>
               <Input
                 id="current-password"
                 type="password"
@@ -75,7 +75,7 @@ export default function ProfilPage() {
             </div>
 
             <div className="flex flex-col gap-2">
-              <Label htmlFor="new-password">Neues Passwort</Label>
+              <Label htmlFor="new-password">New password</Label>
               <Input
                 id="new-password"
                 type="password"
@@ -88,7 +88,7 @@ export default function ProfilPage() {
             </div>
 
             <div className="flex flex-col gap-2">
-              <Label htmlFor="confirm-password">Neues Passwort bestätigen</Label>
+              <Label htmlFor="confirm-password">Confirm new password</Label>
               <Input
                 id="confirm-password"
                 type="password"
@@ -110,7 +110,7 @@ export default function ProfilPage() {
             {success && (
               <p className="border-primary/30 bg-primary/10 text-primary flex items-center gap-2 rounded-lg border px-3.5 py-2.5 text-sm">
                 <CircleCheck className="size-4 shrink-0" />
-                Passwort erfolgreich geändert.
+                Password changed successfully.
               </p>
             )}
 
@@ -121,7 +121,7 @@ export default function ProfilPage() {
               className="w-full"
               disabled={isLoading}
             >
-              {isLoading ? "Wird gespeichert…" : "Passwort ändern"}
+              {isLoading ? "Saving…" : "Change password"}
             </Button>
           </form>
         </div>

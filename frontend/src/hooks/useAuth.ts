@@ -16,14 +16,14 @@ export function useAuth() {
         const result = await authClient.signIn.email({ email, password });
 
         if (result.error) {
-          const msg = result.error.message ?? "Anmeldung fehlgeschlagen.";
+          const msg = result.error.message ?? "Sign-in failed.";
           setError(msg);
           return { error: msg };
         }
 
         return { error: null };
       } catch (e) {
-        const message = e instanceof Error ? e.message : "Unbekannter Fehler.";
+        const message = e instanceof Error ? e.message : "Unknown error.";
         setError(message);
         return { error: message };
       } finally {

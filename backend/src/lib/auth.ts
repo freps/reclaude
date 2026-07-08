@@ -36,11 +36,11 @@ export type AuthUser = {
 
 export type UserRole = "admin" | "user";
 
-// ── Raw-SQL Helpers auf authDb ───────────────────────────────────────────────
-// Die Admin-Endpoints von better-auth (setRole/adminUpdateUser/banUser) verlangen
-// eine Admin-Session (Headers). Beim Bootstrap fehlt diese, und für die
-// Selbst-Schutz-Checks in den Routen brauchen wir direkten Lesezugriff ohne den
-// Admin-Endpoint-Overhead. Daher kapseln diese Helper den Zugriff auf authDb.
+// ── Raw-SQL helpers on authDb ────────────────────────────────────────────────
+// better-auth's admin endpoints (setRole/adminUpdateUser/banUser) require an
+// admin session (headers). During bootstrap there is none, and the
+// self-protection checks in the routes need direct read access without the
+// admin-endpoint overhead. These helpers therefore encapsulate authDb access.
 
 type UserRow = {
   banned: null | number;
@@ -51,7 +51,7 @@ type UserRow = {
   role: null | string;
 };
 
-/** Anzahl der aktiven (nicht gebannten) Admins. */
+/** Number of active (non-banned) admins. */
 export function countActiveAdmins(): number {
   const row = authDb
     .prepare(
@@ -61,7 +61,7 @@ export function countActiveAdmins(): number {
   return row?.c ?? 0;
 }
 
-/** Lädt einen User anhand seiner ID (raw, ohne Admin-Endpoint). */
+/** Loads a user by ID (raw, without the admin endpoint). */
 export function findUserById(id: string): null | {
   banned: boolean;
   createdAt: string;
@@ -77,7 +77,7 @@ export function findUserById(id: string): null | {
   return { ...mapUserRow(row)!, createdAt: row.createdAt ?? "" };
 }
 
-/** Liefert die User-ID zu einer E-Mail (z. B. für den Seed), oder null. */
+/** Returns the user ID for an email (e.g. for the seed), or null. */
 export function findUserIdByEmail(email: string): null | string {
   const row = authDb.prepare("SELECT id FROM user WHERE email = ?").get(email) as null | {
     id: string;
@@ -85,7 +85,7 @@ export function findUserIdByEmail(email: string): null | string {
   return row?.id ?? null;
 }
 
-/** Setzt die Rolle eines Users anhand der E-Mail (Bootstrap, ohne Session). */
+/** Sets a user's role by email (bootstrap, without a session). */
 export function setUserRoleByEmail(email: string, role: UserRole): void {
   authDb.prepare("UPDATE user SET role = ? WHERE email = ?").run(role, email);
 }

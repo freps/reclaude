@@ -78,7 +78,7 @@ export default function TodosPage() {
               </span>
             }
             title="Todos"
-            subtitle={loading ? "Wird geladen…" : `${openCount} offen · ${todos.length} gesamt`}
+            subtitle={loading ? "Loading…" : `${openCount} open · ${todos.length} total`}
           />
         </div>
 
@@ -86,19 +86,19 @@ export default function TodosPage() {
           <Input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="Was ist zu tun?"
-            aria-label="Neues Todo"
+            placeholder="What needs to be done?"
+            aria-label="New todo"
           />
           <Button type="submit" disabled={busy || !title.trim()}>
             <Plus className="size-4" />
-            Hinzufügen
+            Add
           </Button>
         </form>
 
         <div className="mt-6">
           {!loading && todos.length === 0 ? (
             <p className="text-muted-foreground border-border rounded-xl border border-dashed px-4 py-10 text-center text-sm">
-              Noch keine Todos. Füge oben dein erstes hinzu.
+              No todos yet. Add your first one above.
             </p>
           ) : (
             <DList>
@@ -113,7 +113,7 @@ export default function TodosPage() {
                   <Button
                     variant="ghost"
                     size="icon-sm"
-                    aria-label="Löschen"
+                    aria-label="Delete"
                     onClick={() => handleDelete(todo)}
                   >
                     <Trash2 className="size-4" />

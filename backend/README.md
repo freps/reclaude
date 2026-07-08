@@ -4,8 +4,9 @@ Hono on Bun, with SQLite (`bun:sqlite`) and better-auth.
 
 ## Setup
 
+Dependencies are installed via the workspace install from the repo root (`bun install`).
+
 ```sh
-bun install
 cp .env.example .env   # then fill in the secrets
 ```
 

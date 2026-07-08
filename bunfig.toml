@@ -1,0 +1,6 @@
+# Use the hoisted linker (classic node_modules layout) for the workspace install.
+# The shadcn/ui components import individual @radix-ui/react-* packages that are
+# transitive deps of the "radix-ui" umbrella package — Bun's default isolated
+# linker would hide them.
+[install]
+linker = "hoisted"

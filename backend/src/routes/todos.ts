@@ -28,7 +28,7 @@ type TodoRow = {
 function findOwnTodo(id: string, userId: string): TodoRow {
   const row = db.query("SELECT * FROM todos WHERE id = ?").get(id) as null | TodoRow;
   if (!row || row.user_id !== userId) {
-    throw new HTTPException(404, { message: "Todo nicht gefunden." });
+    throw new HTTPException(404, { message: "Todo not found." });
   }
   return row;
 }
@@ -57,7 +57,7 @@ app.post("/", async (c) => {
   const body = await c.req.json<{ title?: string }>();
   const title = body.title?.trim();
   if (!title) {
-    throw new HTTPException(400, { message: "title ist erforderlich." });
+    throw new HTTPException(400, { message: "title is required." });
   }
 
   const id = crypto.randomUUID();
@@ -75,7 +75,7 @@ app.patch("/:id", async (c) => {
   const done = body.done === undefined ? todo.done : body.done ? 1 : 0;
   const title = body.title === undefined ? todo.title : body.title.trim();
   if (!title) {
-    throw new HTTPException(400, { message: "title darf nicht leer sein." });
+    throw new HTTPException(400, { message: "title must not be empty." });
   }
 
   db.run("UPDATE todos SET done = ?, title = ? WHERE id = ?", [done, title, todo.id]);

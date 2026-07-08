@@ -23,20 +23,20 @@ One or more diagrams to help understand the implementation. I.e. it can be visua
 
 ## E2E concept
 
-If it is a E2E change (frontend and backend), add some sentences here what the princple idea is. 
+If it is an E2E change (frontend and backend), add some sentences here on what the principal idea is.
 
 
 ## Frontend 
 
-Short technical explaination what to do in frontend in order to build those features / solve issues. It should be written in a way that a frontend developer can understand it. 
-Add a list of files, whith a short summary what to add / change there. 
-Don't restrict developer too much, it is a recommendation.
+Short technical explanation of what to do in the frontend in order to build those features / solve issues. It should be written in a way that a frontend developer can understand it.
+Add a list of files, with a short summary of what to add / change there.
+Don't restrict the developer too much, it is a recommendation.
 
 ## Backend 
 
-Short technical explaination what to do in backend in order to build those features / solve issues. It should be written in a way that a backend developer can understand it.
-Add a list of files, whith a short summary what to add / change there. 
-Don't restrict developer too much, it is a recommendation.
+Short technical explanation of what to do in the backend in order to build those features / solve issues. It should be written in a way that a backend developer can understand it.
+Add a list of files, with a short summary of what to add / change there.
+Don't restrict the developer too much, it is a recommendation.
 
 ## Diagram
 

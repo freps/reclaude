@@ -106,19 +106,19 @@ export default function ThemePreviewPage() {
             <p className="text-muted-foreground pt-2 text-sm">Example status labels</p>
             <div className="flex flex-wrap gap-2">
               <span className="bg-primary text-primary-foreground inline-flex items-center rounded-full border border-transparent px-2.5 py-0.5 text-xs font-semibold">
-                Aktiv
+                Active
               </span>
               <span className="bg-secondary text-secondary-foreground inline-flex items-center rounded-full border border-transparent px-2.5 py-0.5 text-xs font-semibold">
-                Entwurf
+                Draft
               </span>
               <span className="border-border text-foreground inline-flex items-center rounded-full border bg-transparent px-2.5 py-0.5 text-xs font-semibold">
-                In Prüfung
+                In review
               </span>
               <span className="bg-muted text-muted-foreground inline-flex items-center rounded-full border border-transparent px-2.5 py-0.5 text-xs font-semibold">
-                Archiviert
+                Archived
               </span>
               <span className="bg-destructive inline-flex items-center rounded-full border border-transparent px-2.5 py-0.5 text-xs font-semibold text-white">
-                Abgelehnt
+                Rejected
               </span>
             </div>
           </div>
@@ -131,37 +131,33 @@ export default function ThemePreviewPage() {
             <div className="border-border bg-card flex gap-3 rounded-lg border p-4">
               <Info className="text-muted-foreground mt-0.5 size-4 shrink-0" />
               <div>
-                <p className="text-sm font-medium">Hinweis</p>
+                <p className="text-sm font-medium">Note</p>
                 <p className="text-muted-foreground mt-0.5 text-sm">
-                  Neutrale Information — kein Handlungsbedarf, aber relevant für den Kontext.
+                  Neutral information — no action required, but relevant for context.
                 </p>
               </div>
             </div>
             <div className="border-primary/30 bg-primary/10 text-primary flex gap-3 rounded-lg border p-4">
               <CheckCircle2 className="mt-0.5 size-4 shrink-0" />
               <div>
-                <p className="text-sm font-medium">Erfolgreich</p>
-                <p className="mt-0.5 text-sm opacity-80">
-                  Die Aktion wurde erfolgreich abgeschlossen.
-                </p>
+                <p className="text-sm font-medium">Success</p>
+                <p className="mt-0.5 text-sm opacity-80">The action completed successfully.</p>
               </div>
             </div>
             <div className="flex gap-3 rounded-lg border border-amber-400/40 bg-amber-400/10 p-4 text-amber-600 dark:text-amber-400">
               <AlertTriangle className="mt-0.5 size-4 shrink-0" />
               <div>
-                <p className="text-sm font-medium">Warnung</p>
+                <p className="text-sm font-medium">Warning</p>
                 <p className="mt-0.5 text-sm opacity-80">
-                  Bitte prüfe diese Angabe — sie könnte zu unerwarteten Ergebnissen führen.
+                  Please double-check this value — it could lead to unexpected results.
                 </p>
               </div>
             </div>
             <div className="border-destructive/30 bg-destructive/10 text-destructive flex gap-3 rounded-lg border p-4">
               <AlertCircle className="mt-0.5 size-4 shrink-0" />
               <div>
-                <p className="text-sm font-medium">Fehler</p>
-                <p className="mt-0.5 text-sm opacity-80">
-                  Die Anfrage ist fehlgeschlagen. Bitte versuche es erneut.
-                </p>
+                <p className="text-sm font-medium">Error</p>
+                <p className="mt-0.5 text-sm opacity-80">The request failed. Please try again.</p>
               </div>
             </div>
           </div>
@@ -173,15 +169,15 @@ export default function ThemePreviewPage() {
           <div className="grid grid-cols-3 gap-4">
             <div className="bg-card rounded-xl p-6">
               <p className="text-4xl font-bold">100+</p>
-              <p className="text-muted-foreground mt-2 text-sm">Beispiel-Kennzahl eins.</p>
+              <p className="text-muted-foreground mt-2 text-sm">Example metric one.</p>
             </div>
             <div className="bg-card rounded-xl p-6">
               <p className="text-4xl font-bold">250+</p>
-              <p className="text-muted-foreground mt-2 text-sm">Beispiel-Kennzahl zwei.</p>
+              <p className="text-muted-foreground mt-2 text-sm">Example metric two.</p>
             </div>
             <div className="bg-card rounded-xl p-6">
               <p className="text-4xl font-bold">98%</p>
-              <p className="text-muted-foreground mt-2 text-sm">Beispiel-Kennzahl drei.</p>
+              <p className="text-muted-foreground mt-2 text-sm">Example metric three.</p>
             </div>
           </div>
         </section>
@@ -193,13 +189,12 @@ export default function ThemePreviewPage() {
             <div className="bg-muted text-muted-foreground mb-4 flex size-12 items-center justify-center rounded-xl">
               <FolderOpen className="size-6" />
             </div>
-            <h3 className="font-semibold">Keine Einträge vorhanden</h3>
+            <h3 className="font-semibold">No entries yet</h3>
             <p className="text-muted-foreground mt-1.5 max-w-xs text-sm">
-              Sobald Daten hinzugefügt werden, erscheinen sie hier. Starte jetzt mit dem ersten
-              Eintrag.
+              As soon as data is added, it will appear here. Start with your first entry now.
             </p>
             <Button variant="default" size="xl" className="mt-6">
-              Jetzt hinzufügen
+              Add now
             </Button>
           </div>
         </section>

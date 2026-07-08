@@ -1,15 +1,15 @@
 import { Navigate, Outlet, ScrollRestoration, createBrowserRouter } from "react-router-dom";
 
 import { useAuth } from "@/hooks/useAuth";
-import BenutzerEditPage from "@/pages/benutzer/[userId]/edit";
-import BenutzerListPage from "@/pages/benutzer/index";
-import BenutzerNewPage from "@/pages/benutzer/new";
-import ImpressumPage from "@/pages/impressum";
+import ImprintPage from "@/pages/imprint";
 import HomePage from "@/pages/index";
 import LoginPage from "@/pages/login";
-import ProfilPage from "@/pages/profil";
+import ProfilePage from "@/pages/profile";
 import ThemePreviewPage from "@/pages/theme-preview";
 import TodosPage from "@/pages/todos/index";
+import UserEditPage from "@/pages/users/[userId]/edit";
+import UserListPage from "@/pages/users/index";
+import UserNewPage from "@/pages/users/new";
 
 function RootLayout() {
   return (
@@ -25,7 +25,7 @@ function AuthGuard() {
   if (session.isPending)
     return (
       <div className="flex h-screen items-center justify-center">
-        <span className="text-muted-foreground text-sm">Laden…</span>
+        <span className="text-muted-foreground text-sm">Loading…</span>
       </div>
     );
   if (!session.data) return <Navigate to="/login" replace />;
@@ -37,7 +37,7 @@ function AdminGuard() {
   if (session.isPending)
     return (
       <div className="flex h-screen items-center justify-center">
-        <span className="text-muted-foreground text-sm">Laden…</span>
+        <span className="text-muted-foreground text-sm">Loading…</span>
       </div>
     );
   if (session.data?.user?.role !== "admin") return <Navigate to="/" replace />;
@@ -51,23 +51,23 @@ export const router = createBrowserRouter([
       // ── PUBLIC ──
       { path: "/", element: <HomePage /> },
       { path: "/login", element: <LoginPage /> },
-      { path: "/impressum", element: <ImpressumPage /> },
+      { path: "/imprint", element: <ImprintPage /> },
       { path: "/theme-preview", element: <ThemePreviewPage /> },
 
       // ── PROTECTED ──
       {
         element: <AuthGuard />,
         children: [
-          { path: "/profil", element: <ProfilPage /> },
+          { path: "/profile", element: <ProfilePage /> },
           { path: "/todos", element: <TodosPage /> },
 
           // ── ADMIN-ONLY ──
           {
             element: <AdminGuard />,
             children: [
-              { path: "/benutzer", element: <BenutzerListPage /> },
-              { path: "/benutzer/new", element: <BenutzerNewPage /> },
-              { path: "/benutzer/:userId/edit", element: <BenutzerEditPage /> },
+              { path: "/users", element: <UserListPage /> },
+              { path: "/users/new", element: <UserNewPage /> },
+              { path: "/users/:userId/edit", element: <UserEditPage /> },
             ],
           },
         ],

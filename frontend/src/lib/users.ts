@@ -33,10 +33,10 @@ async function request<T>(input: string, init?: RequestInit): Promise<T> {
 
   if (!res.ok) {
     const body = (await res.json().catch(() => ({}))) as { error?: string };
-    throw new Error(body.error ?? `Anfrage fehlgeschlagen: ${res.status}`);
+    throw new Error(body.error ?? `Request failed: ${res.status}`);
   }
 
-  // 204 (DELETE) → kein Body
+  // 204 (DELETE) → no body
   if (res.status === 204) return undefined as T;
   return (await res.json()) as T;
 }
@@ -46,11 +46,11 @@ export async function listUsers(): Promise<UserDTO[]> {
   return data.users;
 }
 
-/** Lädt die Benutzerliste und sucht einen Einzelnen heraus (kein eigener Backend-Endpunkt nötig). */
+/** Loads the user list and picks a single user (no dedicated backend endpoint needed). */
 export async function findUser(id: string): Promise<UserDTO> {
   const users = await listUsers();
   const user = users.find((u) => u.id === id);
-  if (!user) throw new Error("Benutzer nicht gefunden.");
+  if (!user) throw new Error("User not found.");
   return user;
 }
 
@@ -70,12 +70,12 @@ export async function updateUser(id: string, body: UserUpdateBody): Promise<User
   return data.user;
 }
 
-/** Deaktivieren = ban (DELETE, 204 No Content). */
+/** Deactivate = ban (DELETE, 204 No Content). */
 export async function banUser(id: string): Promise<void> {
   await request<void>(`/api/users/${id}`, { method: "DELETE" });
 }
 
-/** Reaktivieren = unban (PATCH banned:false, liefert aktualisierten User). */
+/** Reactivate = unban (PATCH banned:false, returns the updated user). */
 export async function reactivateUser(id: string): Promise<UserDTO> {
   return updateUser(id, { banned: false });
 }
@@ -84,5 +84,5 @@ export function formatDate(iso: string): string {
   if (!iso) return "—";
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return iso;
-  return d.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
+  return d.toLocaleDateString("en-US", { day: "2-digit", month: "short", year: "numeric" });
 }

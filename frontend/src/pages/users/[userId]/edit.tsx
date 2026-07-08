@@ -19,7 +19,7 @@ import {
 import { useToast } from "@/hooks/useToast";
 import { findUser, updateUser, type Role, type UserDTO } from "@/lib/users";
 
-export default function BenutzerEditPage() {
+export default function UserEditPage() {
   const { userId } = useParams<{ userId: string }>();
   const navigate = useNavigate();
   const { showToast } = useToast();
@@ -48,7 +48,7 @@ export default function BenutzerEditPage() {
         setBanned(u.banned);
       })
       .catch((e: unknown) => {
-        setLoadError(e instanceof Error ? e.message : "Benutzer konnte nicht geladen werden.");
+        setLoadError(e instanceof Error ? e.message : "User could not be loaded.");
       })
       .finally(() => setIsLoading(false));
   }, [userId]);
@@ -72,10 +72,10 @@ export default function BenutzerEditPage() {
         body.resetPassword = resetPassword;
       }
       await updateUser(userId, body);
-      showToast("Benutzer gespeichert.");
-      await navigate("/benutzer");
+      showToast("User saved.");
+      await navigate("/users");
     } catch (e) {
-      showToast(e instanceof Error ? e.message : "Speichern fehlgeschlagen.");
+      showToast(e instanceof Error ? e.message : "Saving failed.");
     } finally {
       setSaving(false);
     }
@@ -85,7 +85,7 @@ export default function BenutzerEditPage() {
     return (
       <div className="bg-background text-foreground min-h-screen">
         <Navbar />
-        <div className="text-muted-foreground p-10 text-sm">Laden…</div>
+        <div className="text-muted-foreground p-10 text-sm">Loading…</div>
       </div>
     );
   }
@@ -97,11 +97,11 @@ export default function BenutzerEditPage() {
         <div className="mx-auto max-w-4xl space-y-6 px-6 py-10">
           <p className="border-destructive/30 bg-destructive/10 text-destructive flex items-center gap-2 rounded-lg border px-3.5 py-2.5 text-sm">
             <CircleAlert className="size-4 shrink-0" />
-            {loadError ?? "Benutzer nicht gefunden."}
+            {loadError ?? "User not found."}
           </p>
-          <Button variant="ghost" onClick={() => void navigate("/benutzer")}>
+          <Button variant="ghost" onClick={() => void navigate("/users")}>
             <ChevronLeft data-icon="inline-start" />
-            Zurück zur Übersicht
+            Back to overview
           </Button>
         </div>
       </div>
@@ -113,12 +113,12 @@ export default function BenutzerEditPage() {
       <Navbar />
       <div className="mx-auto max-w-4xl space-y-6 px-6 pb-32">
         <AppBreadcrumb
-          crumbs={[{ label: "Benutzerverwaltung", href: "/benutzer" }, { label: user.name }]}
+          crumbs={[{ label: "User management", href: "/users" }, { label: user.name }]}
         />
 
         <PageHeader
-          title="Benutzer bearbeiten"
-          subtitle="Stammdaten, Rolle und Status. Passwort zurücksetzen ist optional."
+          title="Edit user"
+          subtitle="Base data, role, and status. Resetting the password is optional."
           leading={
             <span className="border-primary/35 bg-primary/10 text-primary inline-flex size-12 shrink-0 items-center justify-center rounded-[0.875rem] border">
               <ShieldCheck className="size-6" />
@@ -127,7 +127,7 @@ export default function BenutzerEditPage() {
         />
 
         <form
-          id="benutzer-edit-form"
+          id="user-edit-form"
           className="flex flex-col gap-6"
           onSubmit={(e) => {
             e.preventDefault();
@@ -150,7 +150,7 @@ export default function BenutzerEditPage() {
 
               <div className="grid gap-4 md:grid-cols-[12rem_1fr] md:items-center">
                 <Label htmlFor="u-email" className="text-[0.8125rem]">
-                  E-Mail
+                  Email
                 </Label>
                 <Input
                   id="u-email"
@@ -163,14 +163,14 @@ export default function BenutzerEditPage() {
 
               <div className="grid gap-4 md:grid-cols-[12rem_1fr] md:items-center">
                 <Label htmlFor="u-role" className="text-[0.8125rem]">
-                  Rolle
+                  Role
                 </Label>
                 <Select onValueChange={(v) => setRole(v as Role)} value={role}>
                   <SelectTrigger id="u-role">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="user">Benutzer</SelectItem>
+                    <SelectItem value="user">User</SelectItem>
                     <SelectItem value="admin">Admin</SelectItem>
                   </SelectContent>
                 </Select>
@@ -188,15 +188,15 @@ export default function BenutzerEditPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="active">Aktiv</SelectItem>
-                    <SelectItem value="inactive">Inaktiv (deaktiviert)</SelectItem>
+                    <SelectItem value="active">Active</SelectItem>
+                    <SelectItem value="inactive">Inactive (deactivated)</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="grid gap-4 md:grid-cols-[12rem_1fr] md:items-start">
                 <Label htmlFor="u-reset" className="pt-1 text-[0.8125rem]">
-                  Passwort zurücksetzen
+                  Reset password
                 </Label>
                 <div className="flex flex-col gap-2">
                   <label
@@ -208,12 +208,12 @@ export default function BenutzerEditPage() {
                       checked={useResetPassword}
                       onCheckedChange={setUseResetPassword}
                     />
-                    neu setzen
+                    set a new one
                   </label>
                   <Input
                     id="u-reset"
                     disabled={!useResetPassword}
-                    placeholder={useResetPassword ? "••••••••" : "nicht ändern"}
+                    placeholder={useResetPassword ? "••••••••" : "keep unchanged"}
                     type="password"
                     autoComplete="new-password"
                     value={resetPassword}
@@ -229,17 +229,17 @@ export default function BenutzerEditPage() {
       {/* Sticky footer */}
       <div className="bg-background/90 fixed right-0 bottom-0 left-0 z-10 border-t backdrop-blur-sm">
         <div className="mx-auto flex max-w-4xl items-center justify-between gap-4 px-6 py-3">
-          <Button variant="ghost" onClick={() => void navigate("/benutzer")}>
+          <Button variant="ghost" onClick={() => void navigate("/users")}>
             <ChevronLeft data-icon="inline-start" />
-            Zurück zur Übersicht
+            Back to overview
           </Button>
-          <Button type="submit" form="benutzer-edit-form" disabled={!canSave}>
+          <Button type="submit" form="user-edit-form" disabled={!canSave}>
             {saving ? (
               <Loader2 data-icon="inline-start" className="animate-spin" />
             ) : (
               <Save data-icon="inline-start" />
             )}
-            Speichern
+            Save
           </Button>
         </div>
       </div>

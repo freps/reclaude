@@ -1,20 +1,20 @@
 #!/usr/bin/env bun
-// Deterministischer Verzeichnisbaum-Generator (kein LLM).
-// Erzeugt aus `git ls-files <side>/src` (respektiert damit .gitignore) einen
-// kompakten Verzeichnisbaum mit Datei-Zählern + statischen Ordner-Labels und
-// schreibt ihn zwischen die folder-structure-Marker im jeweiligen Steering-Doc.
+// Deterministic folder-tree generator (no LLM).
+// Builds a compact directory tree from `git ls-files <side>/src` (thereby
+// respecting .gitignore) with file counters + static folder labels and writes
+// it between the folder-structure markers in the respective steering doc.
 //
-// Aufruf: bun .claude/hooks/steering-tree.ts <frontend|backend>
+// Usage: bun .claude/hooks/steering-tree.ts <frontend|backend>
 
 import { resolve } from "node:path";
 
 const repoRoot = resolve(import.meta.dir, "..", "..");
 
 type SideConfig = {
-  root: string; // Pfad relativ zum Repo, dessen Baum generiert wird
-  doc: string; // Steering-Doc relativ zum Repo
-  annotations: Record<string, string>; // voller Pfad -> Label
-  collapse: string[]; // Ordner, die nicht aufgeklappt werden (nur Gesamtzahl)
+  root: string; // path relative to the repo whose tree is generated
+  doc: string; // steering doc relative to the repo
+  annotations: Record<string, string>; // full path -> label
+  collapse: string[]; // folders that are not expanded (total count only)
 };
 
 const CONFIG: Record<string, SideConfig> = {
@@ -23,12 +23,12 @@ const CONFIG: Record<string, SideConfig> = {
     doc: ".claude/steering/frontend.md",
     collapse: ["frontend/src/components/ui"],
     annotations: {
-      "frontend/src/components": "Shared Components",
-      "frontend/src/components/ui": "shadcn/ui-Primitives (CLI-generiert, nicht editieren)",
-      "frontend/src/context": "React-Context-Provider",
-      "frontend/src/hooks": "React-Hooks (useX)",
-      "frontend/src/lib": "Utilities & Helfer",
-      "frontend/src/pages": "Seiten (React Router)",
+      "frontend/src/components": "Shared components",
+      "frontend/src/components/ui": "shadcn/ui primitives (CLI-generated, do not edit)",
+      "frontend/src/context": "React context providers",
+      "frontend/src/hooks": "React hooks (useX)",
+      "frontend/src/lib": "Utilities & helpers",
+      "frontend/src/pages": "Pages (React Router)",
     },
   },
   backend: {
@@ -36,9 +36,9 @@ const CONFIG: Record<string, SideConfig> = {
     doc: ".claude/steering/backend.md",
     collapse: [],
     annotations: {
-      "backend/src/lib": "Shared Config & Utilities",
-      "backend/src/routes": "Route-Module (je eine Hono-Instanz)",
-      "backend/src/middleware": "Custom Middleware",
+      "backend/src/lib": "Shared config & utilities",
+      "backend/src/routes": "Route modules (one Hono instance each)",
+      "backend/src/middleware": "Custom middleware",
     },
   },
 };
@@ -46,17 +46,17 @@ const CONFIG: Record<string, SideConfig> = {
 const side = process.argv[2];
 const cfg = CONFIG[side ?? ""];
 if (!cfg) {
-  console.error(`Unbekannte Seite: ${side}. Erlaubt: frontend | backend`);
+  console.error(`Unknown side: ${side}. Allowed: frontend | backend`);
   process.exit(1);
 }
 
-const MARKER_BEGIN = "<!-- BEGIN: folder-structure (auto-generiert – nicht von Hand editieren) -->";
-const MARKER_END = "<!-- END: folder-structure (auto-generiert – nicht von Hand editieren) -->";
+const MARKER_BEGIN = "<!-- BEGIN: folder-structure (auto-generated — do not edit by hand) -->";
+const MARKER_END = "<!-- END: folder-structure (auto-generated — do not edit by hand) -->";
 
-// --- Dateien holen (nur getrackte -> .gitignore respektiert) ---------------
+// --- Collect files (tracked only -> respects .gitignore) --------------------
 const proc = Bun.spawnSync(["git", "ls-files", cfg.root], { cwd: repoRoot });
 if (!proc.success) {
-  console.error(`git ls-files fehlgeschlagen für ${cfg.root}`);
+  console.error(`git ls-files failed for ${cfg.root}`);
   process.exit(1);
 }
 const files = new TextDecoder()
@@ -66,17 +66,17 @@ const files = new TextDecoder()
   .filter(Boolean);
 
 if (files.length === 0) {
-  console.error(`Keine getrackten Dateien unter ${cfg.root} — überspringe.`);
+  console.error(`No tracked files under ${cfg.root} — skipping.`);
   process.exit(0);
 }
 
-// --- Baum aufbauen ---------------------------------------------------------
+// --- Build tree --------------------------------------------------------------
 type Node = { dirs: Map<string, Node>; files: number };
 const emptyNode = (): Node => ({ dirs: new Map(), files: 0 });
 const root = emptyNode();
 
 for (const path of files) {
-  const rel = path.slice(cfg.root.length + 1); // relativ zum root
+  const rel = path.slice(cfg.root.length + 1); // relative to root
   const segs = rel.split("/");
   let node = root;
   for (let i = 0; i < segs.length - 1; i++) {
@@ -87,9 +87,9 @@ for (const path of files) {
   node.files++;
 }
 
-// --- Rendern ---------------------------------------------------------------
-const count = (n: number) => (n > 0 ? `  (${n} ${n === 1 ? "Datei" : "Dateien"})` : "");
-// rekursive Gesamtzahl aller Dateien unter einem Knoten (für Collapse-Ordner)
+// --- Render ------------------------------------------------------------------
+const count = (n: number) => (n > 0 ? `  (${n} ${n === 1 ? "file" : "files"})` : "");
+// recursive total of all files under a node (for collapsed folders)
 const totalFiles = (node: Node): number =>
   node.files + [...node.dirs.values()].reduce((sum, d) => sum + totalFiles(d), 0);
 
@@ -105,7 +105,7 @@ const walk = (node: Node, prefix: string, pathSoFar: string) => {
     const fullPath = `${pathSoFar}/${name}`;
     const ann = cfg.annotations[fullPath];
     const isCollapsed = collapse.has(fullPath);
-    // Collapse-Ordner: rekursive Gesamtzahl zeigen, aber nicht aufklappen.
+    // Collapsed folders: show the recursive total, but don't expand.
     const shown = isCollapsed ? totalFiles(child) : child.files;
     lines.push(prefix + glyph + name + "/" + count(shown) + (ann ? `  — ${ann}` : ""));
     if (!isCollapsed) walk(child, prefix + (last ? "    " : "│   "), fullPath);
@@ -115,13 +115,13 @@ walk(root, "", cfg.root);
 
 const tree = "```\n" + lines.join("\n") + "\n```";
 
-// --- In Doc zwischen Markern einsetzen -------------------------------------
+// --- Insert into doc between markers ----------------------------------------
 const docPath = resolve(repoRoot, cfg.doc);
 const original = await Bun.file(docPath).text();
 const begin = original.indexOf(MARKER_BEGIN);
 const end = original.indexOf(MARKER_END);
 if (begin === -1 || end === -1 || end < begin) {
-  console.error(`folder-structure-Marker in ${cfg.doc} nicht gefunden — überspringe.`);
+  console.error(`folder-structure markers not found in ${cfg.doc} — skipping.`);
   process.exit(0);
 }
 
@@ -131,5 +131,5 @@ const updated = `${before}\n\n${tree}\n\n${after}`;
 
 if (updated !== original) {
   await Bun.write(docPath, updated);
-  console.error(`folder-structure in ${cfg.doc} aktualisiert (${files.length} Dateien).`);
+  console.error(`Updated folder-structure in ${cfg.doc} (${files.length} files).`);
 }

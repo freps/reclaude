@@ -35,15 +35,13 @@ export default function LoginPage() {
         <div className="border-border bg-card w-full max-w-md rounded-xl border p-10">
           <div className="mb-8 text-center">
             <AppLogo />
-            <h2 className="text-2xl font-bold tracking-tight">Willkommen zurück</h2>
-            <p className="text-muted-foreground mt-1.5 text-sm">
-              Melde dich an, um deine Todos zu öffnen.
-            </p>
+            <h2 className="text-2xl font-bold tracking-tight">Welcome back</h2>
+            <p className="text-muted-foreground mt-1.5 text-sm">Sign in to open your todos.</p>
           </div>
 
           <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="email">E-Mail</Label>
+              <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -56,7 +54,7 @@ export default function LoginPage() {
             </div>
 
             <div className="flex flex-col gap-2">
-              <Label htmlFor="password">Passwort</Label>
+              <Label htmlFor="password">Password</Label>
               <Input
                 id="password"
                 type="password"
@@ -82,7 +80,7 @@ export default function LoginPage() {
               className="w-full"
               disabled={isLoading}
             >
-              {isLoading ? "Wird angemeldet…" : "Einloggen"}
+              {isLoading ? "Signing in…" : "Sign in"}
             </Button>
           </form>
         </div>

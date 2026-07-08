@@ -10,19 +10,19 @@ import { useWindowScroll } from "@/hooks/useWindowScroll";
 const features = [
   {
     description:
-      "React 19 + Vite + TailwindCSS v4 + shadcn/ui im Frontend, Hono auf Bun im Backend.",
+      "React 19 + Vite + TailwindCSS v4 + shadcn/ui on the frontend, Hono on Bun on the backend.",
     icon: ListChecks,
-    title: "Voll verdrahteter Stack",
+    title: "Fully wired stack",
   },
   {
     description:
-      "SQLite via bun:sqlite mit Plain-SQL-Migrations und einer beispielhaften Todo-Ressource in app.db.",
+      "SQLite via bun:sqlite with plain-SQL migrations and an example todo resource in app.db.",
     icon: Database,
     title: "Batteries included",
   },
   {
     description:
-      "better-auth mit E-Mail/Passwort, geschützten Routen und admin-only Benutzerverwaltung.",
+      "better-auth with email/password, protected routes, and admin-only user management.",
     icon: ShieldCheck,
     title: "Auth out of the box",
   },
@@ -63,8 +63,8 @@ export default function HomePage() {
           </h1>
 
           <p className="text-muted-foreground mx-auto mb-10 max-w-xl text-lg leading-relaxed">
-            Reclaude ist ein Frontend/Backend-Boilerplate mit React, Hono, SQLite und Auth —
-            inklusive eines spec-getriebenen Multi-Agent-Workflows für Claude Code.
+            Reclaude is a frontend/backend boilerplate with React, Hono, SQLite, and auth —
+            including a spec-driven multi-agent workflow for Claude Code.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4">
@@ -74,7 +74,7 @@ export default function HomePage() {
               className="shadow-primary/25 hover:shadow-primary/35 h-12 gap-2 rounded-xl px-7 text-base font-semibold shadow-xl transition-all"
             >
               <Link to="/login">
-                Jetzt einloggen
+                Sign in now
                 <ArrowRight className="size-4" />
               </Link>
             </Button>
@@ -84,7 +84,7 @@ export default function HomePage() {
               variant="outline"
               className="border-border bg-card/40 hover:bg-accent hover:text-foreground h-12 rounded-xl px-7 text-base font-semibold backdrop-blur"
             >
-              <Link to="/todos">Zur Todo-Demo</Link>
+              <Link to="/todos">Open the todo demo</Link>
             </Button>
           </div>
         </div>

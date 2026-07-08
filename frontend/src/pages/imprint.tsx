@@ -1,45 +1,45 @@
 import Navbar from "@/components/Navbar";
 
-export default function ImpressumPage() {
+export default function ImprintPage() {
   return (
     <div className="min-h-screen">
       <Navbar />
 
       <main className="mx-auto max-w-6xl px-6 py-16">
         <div className="mb-10">
-          <h1 className="text-4xl font-extrabold tracking-tight">Impressum</h1>
-          <p className="text-muted-foreground mt-2">Angaben gemäß § 5 TMG</p>
+          <h1 className="text-4xl font-extrabold tracking-tight">Imprint</h1>
+          <p className="text-muted-foreground mt-2">Legal disclosure</p>
         </div>
 
         <div className="space-y-10">
           <section className="border-border bg-card rounded-2xl border px-8 py-8">
-            <h2 className="mb-4 text-lg font-semibold">Platzhalter — bitte anpassen</h2>
+            <h2 className="mb-4 text-lg font-semibold">Placeholder — please adapt</h2>
             <p className="text-foreground leading-relaxed">
-              Trage hier die Angaben deines Unternehmens ein:
+              Enter your company details here:
               <br />
-              Firmenname / Rechtsform
+              Company name / legal form
               <br />
-              Straße und Hausnummer
+              Street and number
               <br />
-              PLZ Ort, Land
+              ZIP code, city, country
             </p>
             <p className="text-foreground mt-4">
               <span className="text-muted-foreground text-sm tracking-wider uppercase">
-                Kontakt
+                Contact
               </span>
               <br />
-              E-Mail:{" "}
-              <a href="mailto:kontakt@example.com" className="text-primary hover:underline">
-                kontakt@example.com
+              Email:{" "}
+              <a href="mailto:contact@example.com" className="text-primary hover:underline">
+                contact@example.com
               </a>
             </p>
           </section>
 
           <section className="border-border bg-card rounded-2xl border px-8 py-8">
-            <h2 className="mb-4 text-lg font-semibold">Haftung für Inhalte</h2>
+            <h2 className="mb-4 text-lg font-semibold">Liability for content</h2>
             <p className="text-foreground leading-relaxed">
-              Dies ist ein Platzhaltertext des Reclaude-Boilerplates. Ersetze die rechtlichen
-              Hinweise durch die für dein Projekt gültigen Angaben, bevor du in Produktion gehst.
+              This is placeholder text from the Reclaude boilerplate. Replace the legal notices with
+              the details that apply to your project before going to production.
             </p>
           </section>
         </div>
