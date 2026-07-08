@@ -122,14 +122,15 @@ for SIDE in frontend backend; do
   echo "$NOW" > "$LAST_RUN"
 
   # Haiku, to keep the cost of the automatic run low.
-  # --dangerously-skip-permissions is needed so the headless run can edit
-  # without interactive confirmation. The blast radius stays small because only
-  # Read/Grep/Glob/Edit are allowed (no Bash, no Write).
+  # No --dangerously-skip-permissions: --tools hard-limits the available tool
+  # set (Bash/Write/etc. don't even exist for the child), and --allowedTools
+  # pre-approves them for the headless run — with Edit scoped to the steering
+  # docs. Anything outside that is denied (headless mode cannot prompt).
   # stdin from /dev/null, otherwise claude -p waits for input.
   STEERING_HOOK_CHILD=1 $TIMEOUT claude -p "$(prompt_for "$SIDE")" \
     --model claude-haiku-4-5 \
-    --dangerously-skip-permissions \
-    --allowedTools "Read" "Grep" "Glob" "Edit" \
+    --tools "Read,Grep,Glob,Edit" \
+    --allowedTools "Read" "Grep" "Glob" "Edit(.claude/steering/**)" \
     </dev/null >/dev/null 2>&1 || true
 done
 
